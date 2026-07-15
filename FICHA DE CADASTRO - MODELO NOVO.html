@@ -1,0 +1,723 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Grupo R7 – Ficha de Cadastro de Novo Colaborador</title>
+<style>
+  :root {
+    --primaria:   #3D4652;
+    --secundaria: #5B6472;
+    --destaque:   #D4AF37;
+    --dourado:    #C9A227;
+    --dourado-claro: #F2D98A;
+    --fundo:      #F3F4F6;
+    --borda:      #D6D9DD;
+    --texto:      #2F343A;
+    --obrig:      #c0392b;
+    --radius:     4px;
+    --sombra:     0 1px 4px rgba(0,0,0,0.08);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Segoe UI', Arial, sans-serif;
+    background: var(--fundo);
+    color: var(--texto);
+    font-size: 13px;
+    padding: 20px 12px 40px;
+    position: relative;
+  }
+
+  /* Marca d'água */
+  body::before {
+    content: "GRUPO R7";
+    position: fixed;
+    top: 0; left: 0; width: 100%; height: 100%;
+    pointer-events: none;
+    z-index: 9999;
+    font-size: 4rem;
+    color: #D9D9D9;
+    opacity: 0.05;
+    display: flex;
+    flex-wrap: wrap;
+    align-content: space-around;
+    justify-content: center;
+    transform: rotate(-30deg);
+    text-align: center;
+    line-height: 10rem;
+  }
+
+  /* Barra dourada (identidade Grupo R7) */
+  .barra-dourada {
+    height: 6px;
+    max-width: 1000px;
+    margin: 0 auto;
+    background: linear-gradient(90deg, #9C7A1E 0%, #E9CD82 20%, #F2D98A 40%, #B8860B 60%, #E9CD82 80%, #9C7A1E 100%);
+    position: relative;
+    z-index: 1;
+    border-radius: 2px 2px 0 0;
+  }
+  .barra-dourada.inferior { border-radius: 0 0 2px 2px; margin-top: 16px; }
+
+  /* Cabeçalho */
+  header {
+    background: var(--primaria);
+    color: #fff;
+    padding: 22px 32px 20px;
+    max-width: 1000px;
+    margin: 0 auto;
+    position: relative;
+    z-index: 1;
+    text-align: center;
+  }
+  header h1 {
+    font-size: 1.7rem;
+    letter-spacing: .04em;
+    text-transform: uppercase;
+    font-weight: 700;
+  }
+  header h1 .destaque-r7 {
+    color: var(--dourado-claro);
+  }
+  header p {
+    font-size: .85rem;
+    margin-top: 6px;
+    opacity: .9;
+  }
+
+  /* Card principal */
+  .card {
+    background: #fff;
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 24px;
+    border-radius: 0 0 var(--radius) var(--radius);
+    box-shadow: var(--sombra);
+    position: relative;
+    z-index: 1;
+  }
+
+  /* Seções */
+  .secao {
+    margin-bottom: 24px;
+  }
+  .secao-titulo {
+    background: var(--secundaria);
+    color: #fff;
+    font-size: .75rem;
+    font-weight: 700;
+    letter-spacing: .05em;
+    text-transform: uppercase;
+    padding: 6px 12px;
+    border-radius: 2px;
+    margin-bottom: 12px;
+  }
+
+  /* Grid */
+  .grid { display: grid; gap: 12px 16px; }
+  .g1 { grid-template-columns: 1fr; }
+  .g2 { grid-template-columns: 1fr 1fr; }
+  .g3 { grid-template-columns: 1fr 1fr 1fr; }
+  .g4 { grid-template-columns: 1fr 1fr 1fr 1fr; }
+
+  /* Campos */
+  .campo { display: flex; flex-direction: column; }
+  label {
+    font-size: .65rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    color: var(--primaria);
+    margin-bottom: 4px;
+  }
+  label .obrig { color: var(--obrig); margin-left: 2px; }
+
+  input[type="text"], input[type="date"], input[type="email"],
+  input[type="tel"], input[type="number"], input[type="time"], select, textarea {
+    border: 1px solid var(--borda);
+    border-radius: 3px;
+    padding: 6px 10px;
+    font-size: .85rem;
+    color: var(--texto);
+    background: #fff;
+    width: 100%;
+    height: 32px;
+  }
+  textarea { height: auto; }
+  input:focus, select:focus { outline: none; border-color: var(--destaque); }
+
+  /* Opções */
+  .opcoes { display: flex; flex-wrap: wrap; gap: 6px 12px; padding-top: 2px; }
+  .opcoes label {
+    display: flex; align-items: center; gap: 4px;
+    font-size: .78rem; font-weight: 400; text-transform: none; color: var(--texto);
+    cursor: pointer;
+  }
+  .opcoes input { width: 14px; height: 14px; accent-color: var(--primaria); }
+
+  /* Tabela */
+  .tabela-filhos { width: 100%; border-collapse: collapse; margin-top: 6px; table-layout: fixed; }
+  .tabela-filhos th {
+    background: #f1f3f5; color: var(--primaria); font-size: .65rem;
+    text-transform: uppercase; padding: 6px 8px; border: 1px solid var(--borda); text-align: left;
+  }
+  .tabela-filhos td { border: 1px solid var(--borda); padding: 4px 6px; }
+  .tabela-filhos th:first-child, .tabela-filhos td:first-child { text-align: center; width: 22px; background: #f9fafb; padding: 4px 2px; white-space: nowrap; }
+  .tabela-filhos th:nth-child(2), .tabela-filhos td:nth-child(2) { width: auto; } /* Nome — ocupa o resto */
+  .tabela-filhos th:nth-child(3), .tabela-filhos td:nth-child(3) { width: 130px; } /* Data de nascimento */
+  .tabela-filhos th:nth-child(4), .tabela-filhos td:nth-child(4) { width: 130px; } /* CPF */
+  .tabela-filhos input { border: none; background: transparent; width: 100%; height: auto; font-size: .8rem; }
+
+  /* Lista de Documentos */
+  .lista-documentos {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4px 20px;
+    font-size: .8rem;
+    color: var(--texto);
+    list-style: none;
+    padding: 0;
+  }
+  .lista-documentos li::before {
+    content: "•";
+    color: var(--primaria);
+    font-weight: bold;
+    display: inline-block;
+    width: 1em;
+    margin-left: 0;
+  }
+
+  /* Idade calculada (visual, não salva) */
+  .idade-calc {
+    font-size: .78rem;
+    color: var(--secundaria);
+    margin-top: 4px;
+    font-weight: 600;
+  }
+
+  /* Campo composto (ex: Cidade + UF na mesma linha) */
+  .campo-composto { display: flex; gap: 6px; }
+  .campo-composto input { flex: 1; min-width: 0; }
+  .uf-curta { flex: 0 0 62px; }
+
+  /* Botões */
+  .acoes {
+    display: flex; gap: 12px; justify-content: center; margin-top: 24px;
+    padding-top: 20px; border-top: 1px solid var(--borda);
+  }
+  .btn {
+    padding: 8px 24px; border-radius: 3px; font-size: .85rem; font-weight: 700;
+    cursor: pointer; border: none; transition: opacity .2s;
+    display: inline-flex; align-items: center; gap: 8px;
+  }
+  .icone-btn { width: 16px; height: 16px; flex-shrink: 0; }
+  .btn:hover { opacity: 0.8; }
+  .btn-limpar { background: #e2e8f0; color: var(--texto); }
+  .btn-imprimir { background: var(--primaria); color: #fff; }
+
+  .rodape {
+    max-width: 1000px; margin: 20px auto 0; font-size: .72rem;
+    color: #6b7280; text-align: center; line-height: 1.6;
+  }
+
+  /* Validação */
+  .campo-invalido input, .campo-invalido select { border-color: var(--obrig) !important; }
+
+  /* Responsividade */
+  @media (max-width: 700px) {
+    .grid { grid-template-columns: 1fr !important; }
+    .acoes { flex-direction: column; }
+    .btn { width: 100%; }
+    .lista-documentos { grid-template-columns: 1fr; }
+  }
+
+  /* IMPRESSÃO */
+  @media print {
+    @page { size: A4 portrait; margin: 5mm; }
+    body { background: #fff !important; padding: 0 !important; font-size: 7.5pt !important; line-height: 1.15; }
+    body::before { display: block !important; position: fixed; opacity: 0.05; }
+    .barra-dourada { height: 3px !important; }
+    header { background: var(--primaria) !important; color: #fff !important; padding: 6px 8px !important; }
+    header h1 { font-size: 10pt !important; }
+    header p { font-size: 7pt !important; margin-top: 2px !important; }
+    .card { box-shadow: none !important; padding: 6px 8px !important; border: 1px solid #ccc; border-top: none; }
+    .secao { margin-bottom: 6px !important; page-break-inside: avoid; break-inside: avoid; }
+    .secao-titulo { background: #f0f0f0 !important; color: #000 !important; border: 1px solid #ccc; padding: 3px 8px !important; font-size: 7pt !important; margin-bottom: 6px !important; }
+    .acoes { display: none !important; }
+    .modal-overlay { display: none !important; }
+    input, select, textarea { border: 1px solid #ccc !important; height: 16px !important; font-size: 7.5pt !important; padding: 1px 4px !important; }
+    label { font-size: 6.3pt !important; margin-bottom: 1px !important; }
+    .grid { gap: 3px 6px !important; }
+    .idade-calc { font-size: 6.3pt !important; margin-top: 1px !important; }
+    .lista-documentos { gap: 1px 10px !important; font-size: 6.8pt !important; }
+    .tabela-filhos th, .tabela-filhos td { padding: 1px 4px !important; font-size: 6.8pt !important; }
+    .rodape { font-size: 6.3pt !important; margin-top: 6px !important; }
+    textarea { min-height: 24px !important; }
+  }
+
+  /* Modal de aviso — não há armazenamento de dados */
+  .modal-overlay {
+    position: fixed; inset: 0; background: rgba(47,52,58,0.65);
+    display: flex; align-items: center; justify-content: center;
+    z-index: 10000; padding: 16px;
+  }
+  .modal-overlay.oculto { display: none; }
+  .modal-caixa {
+    background: #fff; max-width: 440px; width: 100%;
+    border-radius: var(--radius); overflow: hidden;
+    box-shadow: 0 8px 30px rgba(0,0,0,0.25);
+  }
+  .modal-topo {
+    background: linear-gradient(90deg, #9C7A1E 0%, #E9CD82 25%, #B8860B 50%, #E9CD82 75%, #9C7A1E 100%);
+    height: 6px;
+  }
+  .modal-corpo { padding: 24px 24px 20px; text-align: center; }
+  .modal-icone {
+    width: 44px; height: 44px; margin: 0 auto 12px;
+    display: flex; align-items: center; justify-content: center;
+    border-radius: 50%; background: var(--fundo); color: var(--primaria);
+  }
+  .modal-corpo h2 {
+    font-size: 1.05rem; color: var(--primaria); margin-bottom: 10px;
+  }
+  .modal-corpo p {
+    font-size: .85rem; color: var(--texto); line-height: 1.5; margin-bottom: 6px;
+  }
+  .modal-corpo .aviso-forte { font-weight: 700; color: var(--obrig); }
+  .modal-btn {
+    margin-top: 16px; padding: 9px 28px; border: none; border-radius: 3px;
+    background: var(--primaria); color: #fff; font-size: .85rem; font-weight: 700;
+    cursor: pointer; transition: opacity .2s;
+  }
+  .modal-btn:hover { opacity: .85; }
+</style>
+</head>
+<body>
+
+<div class="modal-overlay" id="modalAviso">
+  <div class="modal-caixa">
+    <div class="modal-topo"></div>
+    <div class="modal-corpo">
+      <div class="modal-icone">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10Z"></path><path d="M9 12l2 2 4-4"></path></svg>
+      </div>
+      <h2>Nenhum dado é salvo</h2>
+      <p>Este formulário funciona apenas no seu navegador. Nenhuma informação preenchida aqui é enviada, coletada ou armazenada pelo Grupo R7 ou por terceiros.</p>
+      <p class="aviso-forte">Ao fechar ou atualizar esta página, todos os dados digitados serão perdidos.</p>
+      <p>Preencha, use o botão "Imprimir" para gerar o PDF ou impresso e entregue/envie ao Departamento Pessoal.</p>
+      <button class="modal-btn" onclick="document.getElementById('modalAviso').classList.add('oculto')">Entendi, continuar</button>
+    </div>
+  </div>
+</div>
+
+<div class="barra-dourada"></div>
+<header>
+  <h1>GRUPO <span class="destaque-r7">R7</span></h1>
+  <p>Ficha de Cadastro de Novo Colaborador</p>
+</header>
+
+<div class="card">
+  <div class="secao">
+    <div class="secao-titulo">Dados da Empresa</div>
+    <div class="grid g2">
+      <div class="campo">
+        <label>Empresa</label>
+        <input type="text" id="empresa">
+      </div>
+      <div class="campo">
+        <label>CNPJ</label>
+        <input type="text" id="cnpj" placeholder="00.000.000/0000-00">
+      </div>
+    </div>
+    <div class="grid g3" style="margin-top:12px">
+      <div class="campo">
+        <label>Data de Admissão <span class="obrig">*</span></label>
+        <input type="date" id="dt_admissao">
+      </div>
+      <div class="campo">
+        <label>Função <span class="obrig">*</span></label>
+        <input type="text" id="funcao">
+      </div>
+      <div class="campo">
+        <label>Carga Horária Semanal <span class="obrig">*</span></label>
+        <input type="text" id="carga_horaria" placeholder="Ex: 44h">
+      </div>
+    </div>
+    <div class="grid g2" style="margin-top:12px">
+      <div class="campo">
+        <label>Salário Mensal <span class="obrig">*</span></label>
+        <input type="text" id="salario" placeholder="R$ 0,00">
+      </div>
+      <div class="campo">
+        <label>Horário de Trabalho <span class="obrig">*</span></label>
+        <input type="text" id="horario_trabalho" placeholder="Ex: 08:00 às 18:00 com 1h de intervalo">
+      </div>
+    </div>
+  </div>
+
+  <div class="secao">
+    <div class="secao-titulo">Dados Pessoais</div>
+    <div class="grid g2">
+      <div class="campo">
+        <label>Nome Completo <span class="obrig">*</span></label>
+        <input type="text" id="nome">
+      </div>
+      <div class="campo">
+        <label>Nome Social</label>
+        <input type="text" id="nome_social">
+      </div>
+    </div>
+    <div class="grid g3" style="margin-top:12px">
+      <div class="campo">
+        <label>CPF <span class="obrig">*</span></label>
+        <input type="text" id="cpf" placeholder="000.000.000-00">
+      </div>
+      <div class="campo">
+        <label>Data de Nascimento <span class="obrig">*</span></label>
+        <input type="date" id="dt_nasc">
+        <span class="idade-calc" id="idade_calc"></span>
+      </div>
+      <div class="campo">
+        <label>Cidade / UF de Nascimento <span class="obrig">*</span></label>
+        <div class="campo-composto">
+          <input type="text" id="cidade_nasc">
+          <select id="uf_nasc" class="uf-curta">
+            <option value="">UF</option>
+            <option>AC</option><option>AL</option><option>AP</option><option>AM</option>
+            <option>BA</option><option>CE</option><option>DF</option><option>ES</option>
+            <option>GO</option><option>MA</option><option>MT</option><option>MS</option>
+            <option>MG</option><option>PA</option><option>PB</option><option>PR</option>
+            <option>PE</option><option>PI</option><option>RJ</option><option>RN</option>
+            <option>RS</option><option>RO</option><option>RR</option><option>SC</option>
+            <option>SP</option><option>SE</option><option>TO</option>
+          </select>
+        </div>
+      </div>
+    </div>
+    <div class="grid g3" style="margin-top:12px">
+      <div class="campo">
+        <label>Sexo <span class="obrig">*</span></label>
+        <select id="sexo">
+          <option value="">Selecione</option>
+          <option>Masculino</option>
+          <option>Feminino</option>
+        </select>
+      </div>
+      <div class="campo">
+        <label>Nacionalidade <span class="obrig">*</span></label>
+        <input type="text" id="nacionalidade" placeholder="Ex: Brasileira">
+      </div>
+      <div class="campo">
+        <label>Pessoa com Deficiência (PCD) <span class="obrig">*</span></label>
+        <div class="opcoes">
+          <label><input type="radio" name="pcd" value="Sim" onchange="toggleObsPcd()"> Sim</label>
+          <label><input type="radio" name="pcd" value="Não" onchange="toggleObsPcd()"> Não</label>
+        </div>
+      </div>
+    </div>
+    <div class="grid g1" id="bloco_pcd_desc" style="margin-top:12px; display:none">
+      <div class="campo">
+        <label>Descrição da Deficiência <span class="obrig">*</span></label>
+        <input type="text" id="pcd_desc">
+      </div>
+    </div>
+    <div class="grid g3" style="margin-top:12px">
+      <div class="campo">
+        <label>Raça <span class="obrig">*</span></label>
+        <select id="raca">
+          <option value="">Selecione</option>
+          <option>Branca</option>
+          <option>Preta</option>
+          <option>Parda</option>
+          <option>Amarela</option>
+          <option>Indígena</option>
+        </select>
+      </div>
+      <div class="campo">
+        <label>Grau de Escolaridade <span class="obrig">*</span></label>
+        <select id="escolaridade">
+          <option value="">Selecione</option>
+          <option>Fundamental Incompleto</option>
+          <option>Fundamental Completo</option>
+          <option>Médio Incompleto</option>
+          <option>Médio Completo</option>
+          <option>Superior Incompleto</option>
+          <option>Superior Completo</option>
+          <option>Pós-graduação</option>
+        </select>
+      </div>
+      <div class="campo">
+        <label>Estado Civil <span class="obrig">*</span></label>
+        <select id="est_civil">
+          <option value="">Selecione</option>
+          <option>Solteiro(a)</option>
+          <option>Casado(a)</option>
+          <option>Divorciado(a)</option>
+          <option>Viúvo(a)</option>
+          <option>União Estável</option>
+        </select>
+      </div>
+    </div>
+    <div class="grid g2" style="margin-top:12px">
+      <div class="campo">
+        <label>Nome do Pai</label>
+        <input type="text" id="nome_pai">
+      </div>
+      <div class="campo">
+        <label>Nome da Mãe <span class="obrig">*</span></label>
+        <input type="text" id="nome_mae">
+      </div>
+    </div>
+    <div class="grid g2" style="margin-top:12px">
+      <div class="campo">
+        <label>Celular</label>
+        <input type="tel" id="celular" placeholder="(00) 00000-0000">
+      </div>
+      <div class="campo">
+        <label>E-mail</label>
+        <input type="text" id="email">
+      </div>
+    </div>
+  </div>
+
+  <div class="secao">
+    <div class="secao-titulo">Endereço</div>
+    <div class="grid g4">
+      <div class="campo">
+        <label>CEP <span class="obrig">*</span></label>
+        <input type="text" id="cep" placeholder="00000-000">
+      </div>
+      <div class="campo" style="grid-column: span 2">
+        <label>Logradouro <span class="obrig">*</span></label>
+        <input type="text" id="endereco">
+      </div>
+      <div class="campo">
+        <label>Nº <span class="obrig">*</span></label>
+        <input type="text" id="num">
+      </div>
+    </div>
+    <div class="grid g3" style="margin-top:12px">
+      <div class="campo">
+        <label>Bairro <span class="obrig">*</span></label>
+        <input type="text" id="bairro">
+      </div>
+      <div class="campo">
+        <label>Cidade <span class="obrig">*</span></label>
+        <input type="text" id="cidade">
+      </div>
+      <div class="campo">
+        <label>UF <span class="obrig">*</span></label>
+        <select id="uf">
+          <option value="">Selecione</option>
+          <option>AC</option><option>AL</option><option>AP</option><option>AM</option>
+          <option>BA</option><option>CE</option><option>DF</option><option>ES</option>
+          <option>GO</option><option>MA</option><option>MT</option><option>MS</option>
+          <option>MG</option><option>PA</option><option>PB</option><option>PR</option>
+          <option>PE</option><option>PI</option><option>RJ</option><option>RN</option>
+          <option>RS</option><option>RO</option><option>RR</option><option>SC</option>
+          <option>SP</option><option>SE</option><option>TO</option>
+        </select>
+      </div>
+    </div>
+  </div>
+
+  <div class="secao">
+    <div class="secao-titulo">Dependentes Menores de 14 Anos (Máximo 3)</div>
+    <table class="tabela-filhos">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Nome Completo</th>
+          <th>Data de Nascimento</th>
+          <th>CPF</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>1</td><td><input type="text" id="dep1_nome"></td><td><input type="date" id="dep1_nasc"></td><td><input type="text" id="dep1_cpf"></td></tr>
+        <tr><td>2</td><td><input type="text" id="dep2_nome"></td><td><input type="date" id="dep2_nasc"></td><td><input type="text" id="dep2_cpf"></td></tr>
+        <tr><td>3</td><td><input type="text" id="dep3_nome"></td><td><input type="date" id="dep3_nasc"></td><td><input type="text" id="dep3_cpf"></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="secao">
+    <div class="secao-titulo">Documentos</div>
+    <div class="grid g4">
+      <div class="campo">
+        <label>RG</label>
+        <input type="text" id="rg">
+      </div>
+      <div class="campo">
+        <label>Órgão Emissor</label>
+        <input type="text" id="rg_orgao" placeholder="Ex: SSP">
+      </div>
+      <div class="campo">
+        <label>UF Emissor</label>
+        <select id="rg_uf">
+          <option value="">UF</option>
+          <option>AC</option><option>AL</option><option>AP</option><option>AM</option>
+          <option>BA</option><option>CE</option><option>DF</option><option>ES</option>
+          <option>GO</option><option>MA</option><option>MT</option><option>MS</option>
+          <option>MG</option><option>PA</option><option>PB</option><option>PR</option>
+          <option>PE</option><option>PI</option><option>RJ</option><option>RN</option>
+          <option>RS</option><option>RO</option><option>RR</option><option>SC</option>
+          <option>SP</option><option>SE</option><option>TO</option>
+        </select>
+      </div>
+      <div class="campo">
+        <label>PIS/NIS</label>
+        <input type="text" id="pis">
+      </div>
+    </div>
+    <div class="grid g4" style="margin-top:12px">
+      <div class="campo">
+        <label>CTPS Nº</label>
+        <input type="text" id="ctps_num">
+      </div>
+      <div class="campo">
+        <label>CTPS Série</label>
+        <input type="text" id="ctps_serie">
+      </div>
+      <div class="campo">
+        <label>CTPS UF</label>
+        <select id="ctps_uf">
+          <option value="">UF</option>
+          <option>AC</option><option>AL</option><option>AP</option><option>AM</option>
+          <option>BA</option><option>CE</option><option>DF</option><option>ES</option>
+          <option>GO</option><option>MA</option><option>MT</option><option>MS</option>
+          <option>MG</option><option>PA</option><option>PB</option><option>PR</option>
+          <option>PE</option><option>PI</option><option>RJ</option><option>RN</option>
+          <option>RS</option><option>RO</option><option>RR</option><option>SC</option>
+          <option>SP</option><option>SE</option><option>TO</option>
+        </select>
+      </div>
+      <div class="campo">
+        <label>Título de Eleitor</label>
+        <input type="text" id="titulo_eleitor">
+      </div>
+    </div>
+  </div>
+
+  <div class="secao">
+    <div class="secao-titulo">Documentos Necessários para Admissão</div>
+    <ul class="lista-documentos">
+      <li>Exame admissional</li>
+      <li>RG</li>
+      <li>CPF e/ou CNH</li>
+      <li>Título de eleitor (opcional)</li>
+      <li>Certidão de nascimento/casamento</li>
+      <li>Comprovante de residência (com CEP)</li>
+      <li>CTPS Digital</li>
+      <li>Dependentes (se houver): cópia do CPF e/ou certidão de nascimento</li>
+      <li>Declaração de vacinação (filhos menores de 6 anos)</li>
+      <li>Declaração escolar (filhos de 7 a 14 anos)</li>
+      <li>01 foto 3×4 (recente)</li>
+    </ul>
+  </div>
+
+  <div class="secao">
+    <div class="secao-titulo">Observações</div>
+    <textarea id="obs" rows="2"></textarea>
+  </div>
+
+  <div class="acoes">
+    <button class="btn btn-limpar" onclick="limpar()">
+      <svg class="icone-btn" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"></path><path d="M10 11v6"></path><path d="M14 11v6"></path><path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"></path></svg>
+      Limpar
+    </button>
+    <button class="btn btn-imprimir" onclick="imprimir()">
+      <svg class="icone-btn" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 6 2 18 2 18 9"></polyline><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>
+      Imprimir
+    </button>
+  </div>
+</div>
+<div class="barra-dourada inferior"></div>
+
+<div class="rodape">
+  Desenvolvido por João Miguel | Grupo R7 Serviços Contábeis e Administrativos<br>
+  contato_r7@outlook.com · (43) 98406-0847<br>
+  © 2026 Grupo R7
+</div>
+
+<script>
+  // Máscaras
+  function m(i, f) {
+    const e = document.getElementById(i);
+    if (e) e.addEventListener('input', x => { x.target.value = f(x.target.value); });
+  }
+  const mCPF = v => v.replace(/\D/g,'').slice(0,11).replace(/(\d{3})(\d)/,'$1.$2').replace(/(\d{3})(\d)/,'$1.$2').replace(/(\d{3})(\d{1,2})$/,'$1-$2');
+  const mCNPJ = v => v.replace(/\D/g,'').slice(0,14).replace(/(\d{2})(\d)/,'$1.$2').replace(/(\d{3})(\d)/,'$1.$2').replace(/(\d{3})(\d)/,'$1/$2').replace(/(\d{4})(\d{1,2})$/,'$1-$2');
+  const mCEP = v => v.replace(/\D/g,'').slice(0,8).replace(/(\d{5})(\d)/,'$1-$2');
+  const mTel = v => v.replace(/\D/g,'').slice(0,11).replace(/(\d{2})(\d)/,'($1) $2').replace(/(\d{5})(\d)/,'$1-$2');
+  const mVal = v => {
+    v = v.replace(/\D/g,'');
+    return v ? (Number(v)/100).toLocaleString('pt-BR', {style:'currency', currency:'BRL'}) : '';
+  };
+
+  m('cpf', mCPF); m('dep1_cpf', mCPF); m('dep2_cpf', mCPF); m('dep3_cpf', mCPF);
+  m('cnpj', mCNPJ); m('cep', mCEP); m('celular', mTel);
+  
+  document.getElementById('salario').addEventListener('blur', e => {
+    if(e.target.value) e.target.value = mVal(e.target.value);
+  });
+
+  // Idade automática (apenas visual, não é salva/enviada)
+  document.getElementById('dt_nasc').addEventListener('change', e => {
+    const el = document.getElementById('idade_calc');
+    if (!e.target.value) { el.textContent = ''; return; }
+    const nasc = new Date(e.target.value + 'T00:00:00');
+    const hoje = new Date();
+    let idade = hoje.getFullYear() - nasc.getFullYear();
+    const aindaNaoFezAniversario = (hoje.getMonth() < nasc.getMonth()) ||
+      (hoje.getMonth() === nasc.getMonth() && hoje.getDate() < nasc.getDate());
+    if (aindaNaoFezAniversario) idade--;
+    el.textContent = idade >= 0 ? `Idade: ${idade} anos` : '';
+  });
+
+  // Exibe/oculta campo de descrição da deficiência (PCD)
+  function toggleObsPcd() {
+    const sim = document.querySelector('input[name="pcd"][value="Sim"]').checked;
+    document.getElementById('bloco_pcd_desc').style.display = sim ? 'grid' : 'none';
+    if (!sim) document.getElementById('pcd_desc').value = '';
+  }
+
+  function limpar() {
+    if(confirm('Limpar todos os dados?')) location.reload();
+  }
+
+  function imprimir() {
+    const erros = [];
+    document.querySelectorAll('.campo-invalido').forEach(e => e.classList.remove('campo-invalido'));
+    document.querySelectorAll('label .obrig').forEach(o => {
+      const campo = o.closest('.campo');
+      if (campo.offsetParent === null) return; // ignora campos ocultos (ex: descrição PCD quando "Não")
+      
+      // Verifica se é um grupo de rádio
+      const radioGroup = campo.querySelector('input[type="radio"]');
+      if (radioGroup) {
+        const name = radioGroup.getAttribute('name');
+        if (!document.querySelector(`input[name="${name}"]:checked`)) {
+          campo.classList.add('campo-invalido');
+          erros.push(o.parentElement.textContent.replace('*','').trim());
+        }
+      } else {
+        // Campo composto (ex: Cidade + UF): todos os sub-campos devem estar preenchidos
+        const subCampos = campo.querySelectorAll('input, select');
+        const algumVazio = Array.from(subCampos).some(c => !c.value.trim());
+        if (subCampos.length && algumVazio) {
+          campo.classList.add('campo-invalido');
+          erros.push(o.parentElement.textContent.replace('*','').trim());
+        }
+      }
+    });
+
+    if(erros.length > 0) {
+      alert('Preencha os campos obrigatórios:\n- ' + erros.join('\n- '));
+      return;
+    }
+    window.print();
+  }
+</script>
+</body>
+</html>
